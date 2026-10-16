@@ -29,20 +29,20 @@ export const MinimalBottomBar: React.FC<MinimalBottomBarProps> = ({
 
   return (
     <div className="w-full max-w-xl mx-auto px-4 mt-6 sm:mt-10 flex flex-wrap items-center justify-center gap-3">
-      {/* Bold OLED ScreenSaver Pill */}
+      {/* Bold Monochrome OLED Anti-Burn Pill */}
       <button
         onClick={() => {
           soundEffects.playClick();
           onOpenOled();
         }}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-900/40 via-indigo-900/40 to-purple-900/40 border border-purple-500/40 hover:border-purple-400 text-purple-200 text-xs font-black tracking-wider uppercase apple-pressable shadow-lg shadow-purple-950/40"
-        title="Launch OLED Cosmic Anti-Burn Engine (O)"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-xs font-black tracking-wider uppercase apple-pressable transition-colors"
+        title="Launch OLED Anti-Burn Engine (O)"
       >
-        <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" />
+        <Sparkles className="w-4 h-4 text-white" />
         <span>OLED ANTI-BURN</span>
       </button>
 
-      {/* Quick Sound Cycle Pill */}
+      {/* Monochrome Sound Cycle Pill */}
       <button
         onClick={() => {
           soundEffects.playClick();
@@ -50,7 +50,7 @@ export const MinimalBottomBar: React.FC<MinimalBottomBarProps> = ({
         }}
         className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-black tracking-wider uppercase apple-pressable transition-all ${
           currentSound !== 'none'
-            ? 'bg-indigo-950/60 border-indigo-400/50 text-indigo-300'
+            ? 'bg-white text-black border-white'
             : 'bg-white/5 border-white/10 hover:border-white/20 text-white/60 hover:text-white'
         }`}
         title="Cycle Ambient Sound (M)"
@@ -59,7 +59,7 @@ export const MinimalBottomBar: React.FC<MinimalBottomBarProps> = ({
         <span>NOISE: {soundLabelMap[currentSound]}</span>
       </button>
 
-      {/* Battery Guard Quick Toggle */}
+      {/* Monochrome Battery Guard Toggle */}
       <button
         onClick={() => {
           soundEffects.playClick();
@@ -67,13 +67,13 @@ export const MinimalBottomBar: React.FC<MinimalBottomBarProps> = ({
         }}
         className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-black tracking-wider uppercase apple-pressable transition-all ${
           isBatteryGuardEnabled
-            ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
+            ? 'bg-white/15 border-white/30 text-white'
             : 'bg-white/5 border-white/10 hover:border-white/20 text-white/40 hover:text-white'
         }`}
         title="Toggle Low Battery Auto-Off Guard"
       >
         {isBatteryGuardEnabled ? (
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <ShieldCheck className="w-4 h-4 text-white" />
         ) : (
           <ShieldOff className="w-4 h-4 text-white/40" />
         )}

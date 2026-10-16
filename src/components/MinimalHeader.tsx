@@ -28,8 +28,8 @@ export const MinimalHeader: React.FC<MinimalHeaderProps> = ({
       {/* Brand: Bold, Clean, Minimal */}
       <div className="flex items-center gap-2.5">
         <span
-          className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
-            isWakeActive ? 'bg-emerald-400 shadow-[0_0_10px_#34c759]' : 'bg-white/20'
+          className={`w-2 h-2 rounded-full ${
+            isWakeActive ? 'bg-white' : 'bg-white/20'
           }`}
         />
         <h1 className="text-xl font-black tracking-tighter text-white uppercase select-none">
@@ -43,7 +43,7 @@ export const MinimalHeader: React.FC<MinimalHeaderProps> = ({
         {isBatterySupported && (
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-bold font-mono text-white/80">
             {isCharging ? (
-              <BatteryCharging className="w-3.5 h-3.5 text-emerald-400" />
+              <BatteryCharging className="w-3.5 h-3.5 text-white" />
             ) : (
               <Battery className="w-3.5 h-3.5 text-white/60" />
             )}
