@@ -1,77 +1,86 @@
-# KeepItON
+# KeepItON ☕⚡
 
 <div align="center">
-  <img src="./public/favicon.svg" width="96" height="96" alt="KeepItON Logo" />
-  <h3>Keep Your Screen Awake • Bold Minimalist & OLED Anti-Burn Engine</h3>
-  <p>An ultra-minimalist, high-contrast, bold web utility to keep your screen awake with zero text clutter, dual-engine wake lock, session timers, and a dedicated 60fps OLED cosmic screen protector.</p>
+  <img src="./public/favicon.svg" width="80" height="80" alt="KeepItON Logo" />
+  <h1>KeepItON</h1>
+  <p><strong>Because your laptop loves sleeping more than a cat, especially when your AI agents or background servers are in the middle of life-or-death tasks.</strong></p>
 
   <p>
-    <a href="https://p19racha.github.io/KeepItON/"><strong>🌐 Launch Live Web App</strong></a>
+    <a href="https://p19racha.github.io/KeepItON/"><strong>🚀 Launch Live Web App (No Install Needed)</strong></a>
   </p>
 </div>
 
 ---
 
-## Highlights
+## 💀 The Tragedy You Know Too Well
 
-- ⚡ **Bold Minimalist Aesthetic**: Stripped of all text clutter, featuring massive high-impact typography, tactile Play/Pause controls, and high-contrast OLED black.
-- 🌌 **Full-Screen Full-Brightness OLED Anti-Burn Engine**: Turns the whole screen into full-on brightness color fields that smoothly transmute from color to color touching every single color across the spectrum in an infinite loop, exercising all sub-pixels uniformly and eliminating burn-in.
-- ⚡ **Dual-Engine Wake Lock**:
-  - **Primary**: Native W3C [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) (`navigator.wakeLock`).
-  - **Fallback**: Canvas-generated looping video stream for iOS Safari and unsupported browsers.
-  - **Smart Reacquisition**: Automatically restores the screen wake lock when returning to the tab via `visibilitychange`.
-- 🔋 **Battery Guard**: Monitors battery percentage and charging state via `navigator.getBattery()`, with configurable auto-shutoff below 20% to prevent unexpected battery drain when unplugged.
-- 🎧 **Ambient Focus Audio**: Procedural Web Audio synthesizer featuring **Brown Noise** (deep focus), **Gentle Rain**, and **White Noise** without downloading heavy audio files.
-- 📱 **Installable PWA**: Works offline and can be installed directly to the macOS Dock, iOS Home Screen, Android, or Windows.
-- 🚀 **100% Client-Side Privacy**: Runs completely inside your browser with zero analytics, cookies, or backend servers.
+1. You unleash 8 autonomous AI agents to scrape the internet, re-index 50,000 vector embeddings, and compile a massive Rust monolith.
+2. You walk away for 2 minutes to grab a cup of coffee.
+3. You return to find: **Screen locked. Laptop suspended. Wi-Fi disconnected. SSH broken. All your agents killed in cold blood by macOS / Windows power-saving demons.**
+4. Or worse: You disabled screen lock in your OS settings, left it running overnight, and woke up to find your terminal prompt permanently burned into your $2,000 OLED display like a biblical curse.
+
+**KeepItON solves both problems without requiring sudo permissions, shady executables, or terminal hacks.**
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## ✨ Features That Prevent Tragedies
 
-| Shortcut | Action |
-| :--- | :--- |
-| <kbd>Space</kbd> | Toggle Keep-Awake ON / OFF |
-| <kbd>O</kbd> | Launch / Exit OLED Cosmic Anti-Burn Mode |
-| <kbd>F</kbd> | Toggle Fullscreen Mode |
-| <kbd>M</kbd> | Toggle Ambient Audio (Mute / Unmute) |
-| <kbd>Esc</kbd> | Exit OLED Mode or close popups |
+- **▶ / ⏸ One-Click Survival Button**: 
+  Click Play (`▶`). Your screen stays awake. Your agents stay alive. Your background tasks don't flatline. Click Pause (`⏸`) when you actually want your laptop to take a nap.
+
+- **🌈 OLED Anti-Burn Hypnotic Rave**:
+  Got an expensive OLED / AMOLED panel? Hit `OLED ANTI-BURN` (or tap `O`). The whole screen turns into a continuous, full-brightness, smooth color cycle touching literally every single color on the visible spectrum in an infinite loop. Every sub-pixel is exercised uniformly. Zero burn-in. Looks like a modern art installation.
+
+- **🔋 Battery Guard (Anti-Disaster Feature)**:
+  Forgot your charger in the living room? If your battery drops below 20% on battery power, KeepItON will gracefully release the lock so your laptop doesn't drain to 0% and die while you sleep.
+
+- **🎧 Built-in Noise Generator**:
+  Synthesizes pure procedural **Brown Noise**, **Rainfall**, or **White Noise** using Web Audio to mask the sound of your laptop fans screaming at 7,000 RPM while your agents churn through tokens.
+
+- **📱 Zero Downloads, Zero Bullsh*t**:
+  100% static client-side web app hosted on GitHub Pages. No extensions, no electron bloat, no cookies, no tracking. Works on Chrome, Edge, Safari, Firefox, iPhone, iPad, Android, and your fridge if it has a browser.
+
+---
+
+## ⌨️ Hotkeys For The Lazy
+
+| Key | What It Does |
+| :---: | :--- |
+| <kbd>Space</kbd> | Toggle Keep-Awake (Play / Pause) |
+| <kbd>O</kbd> | Enter / Exit OLED Full-Screen Color Cycle |
+| <kbd>F</kbd> | Go Fullscreen |
+| <kbd>M</kbd> | Toggle Ambient Noise (Mute / Unmute) |
+| <kbd>Esc</kbd> | Exit OLED or Fullscreen mode |
+
+---
+
+## 🔬 How Does It Trick The OS?
+
+1. **W3C Screen Wake Lock API**: Uses `navigator.wakeLock.request('screen')` directly.
+2. **Invisible Video Fallback**: If you're on a browser that hates wake locks (looking at you, iOS Safari), it silently plays an invisible 1-pixel canvas stream in a loop. The OS thinks you're streaming *The Godfather* and refuses to turn off the display.
+3. **Auto-Reacquisition**: If you switch tabs and come back, it automatically re-grabs the wake lock without making you click again.
 
 ---
 
 ## 🛠️ Local Development
 
 ```bash
-# Clone repository
+# Clone it
 git clone https://github.com/p19racha/KeepItON.git
 cd KeepItON
 
-# Install dependencies
+# Install dependencies (just Vite, React, and Lucide)
 pnpm install
 
-# Start local development server
+# Run locally
 pnpm dev
 
-# Build production static bundle for GitHub Pages
+# Build static bundle
 pnpm build
-
-# Preview production build locally
-pnpm preview
 ```
 
 ---
 
-## 🌐 Deploy to GitHub Pages
+## 📜 License
 
-1. Push to the `main` branch.
-2. In your GitHub repository settings:
-   - Go to **Settings** > **Pages**.
-   - Under **Build and deployment** > **Source**, select **GitHub Actions**.
-3. The included `.github/workflows/deploy.yml` workflow will automatically build and publish KeepItON at:
-   `https://<your-username>.github.io/KeepItON/`
-
----
-
-## 📄 License
-
-MIT License © 2026 [p19racha](https://github.com/p19racha)
+MIT License © 2026 [p19racha](https://github.com/p19racha) — *Sleep is for mortals, not background daemons.*
