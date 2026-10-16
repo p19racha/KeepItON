@@ -14,9 +14,8 @@
 
 ## Highlights
 
-- ⚡ **Bold Minimalist Aesthetic**: Stripped of text clutter, featuring massive high-impact typography, tactile Play/Pause controls, and high-contrast OLED black.
-- 🌌 **Full-Spectrum OLED Anti-Burn Engine**: Continuous, 60fps procedural celestial nebulas smoothly transmuting through literally all spectral colors over true `#000000` deep blacks with organic floating clock coordinates to prevent OLED image retention.
-- ↔️ **To-and-Fro Active Time**: Live active session time glides smoothly from bottom right to bottom left in an infinite, physical harmonic loop.
+- ⚡ **Bold Minimalist Aesthetic**: Stripped of all text clutter, featuring massive high-impact typography, tactile Play/Pause controls, and high-contrast OLED black.
+- 🌌 **Full-Screen Full-Brightness OLED Anti-Burn Engine**: Turns the whole screen into full-on brightness color fields that smoothly transmute from color to color touching every single color across the spectrum in an infinite loop, exercising all sub-pixels uniformly and eliminating burn-in.
 - ⚡ **Dual-Engine Wake Lock**:
   - **Primary**: Native W3C [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) (`navigator.wakeLock`).
   - **Fallback**: Canvas-generated looping video stream for iOS Safari and unsupported browsers.

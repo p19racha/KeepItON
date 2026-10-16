@@ -45,18 +45,3 @@
 .apple-pressable:active {
   transform: scale(0.95);
 }
-
-/* Smooth To-and-Fro Active Time Oscillator */
-@keyframes toAndFroMotion {
-  0% {
-    transform: translate3d(calc(100vw - 100% - 32px), 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.oscillate-to-and-fro {
-  animation: toAndFroMotion 14s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-  will-change: transform;
-}

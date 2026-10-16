@@ -5,7 +5,6 @@ import { useAmbientAudio, type AmbientSoundType } from './hooks/useAmbientAudio'
 import { MinimalHeader } from './components/MinimalHeader';
 import { MinimalHero } from './components/MinimalHero';
 import { MinimalBottomBar } from './components/MinimalBottomBar';
-import { OscillatingActiveTime } from './components/OscillatingActiveTime';
 import { OledCosmicOverlay } from './components/OledCosmicOverlay';
 import { soundEffects } from './utils/appleChime';
 
@@ -16,7 +15,6 @@ export default function App() {
   // Core Wake Lock Hook
   const {
     isActive,
-    elapsedSeconds,
     toggle: toggleWake,
     release: releaseWake,
   } = useWakeLock();
@@ -142,19 +140,12 @@ export default function App() {
         <span>SPACE TO TOGGLE • O FOR OLED • F FOR FULLSCREEN</span>
       </footer>
 
-      {/* Oscillating Active Time: Glides smoothly to and fro from bottom right to left in a loop */}
-      <OscillatingActiveTime
-        isActive={isActive}
-        elapsedSeconds={elapsedSeconds}
-      />
-
-      {/* OLED Anti-Burn Engine Fullscreen Overlay with full-spectrum smooth transmutation */}
+      {/* Full-Screen Smooth Color Transmutation OLED Anti-Burn Overlay */}
       <OledCosmicOverlay
         isOpen={isOledOpen}
         onClose={() => setIsOledOpen(false)}
         isWakeActive={isActive}
         onToggleWake={toggleWake}
-        elapsedSeconds={elapsedSeconds}
       />
     </div>
   );
