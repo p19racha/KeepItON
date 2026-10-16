@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useWakeLock } from './hooks/useWakeLock';
-import { useTimer, type TimerPreset } from './hooks/useTimer';
 import { useBattery } from './hooks/useBattery';
 import { useAmbientAudio, type AmbientSoundType } from './hooks/useAmbientAudio';
 import { MinimalHeader } from './components/MinimalHeader';
 import { MinimalHero } from './components/MinimalHero';
-import { MinimalTimerBar } from './components/MinimalTimerBar';
 import { MinimalBottomBar } from './components/MinimalBottomBar';
+import { OscillatingActiveTime } from './components/OscillatingActiveTime';
 import { OledCosmicOverlay } from './components/OledCosmicOverlay';
 import { soundEffects } from './utils/appleChime';
 
@@ -21,22 +20,6 @@ export default function App() {
     toggle: toggleWake,
     release: releaseWake,
   } = useWakeLock();
-
-  // Timer Hook with auto-release callback
-  const handleTimerExpire = useCallback(() => {
-    releaseWake();
-  }, [releaseWake]);
-
-  const {
-    preset,
-    customMinutes,
-    formattedRemaining,
-    setPreset,
-    setCustomMinutes,
-  } = useTimer(isActive, {
-    onExpire: handleTimerExpire,
-    playChimeOnExpire: true,
-  });
 
   // Battery Hook with guard auto-release callback
   const handleLowBattery = useCallback(() => {
@@ -113,20 +96,6 @@ export default function App() {
         e.preventDefault();
         soundEffects.playClick();
         toggleAudioPlay();
-      } else if (['1', '2', '3', '4', '5', '6'].includes(e.key)) {
-        const presetsMap: Record<string, TimerPreset> = {
-          '1': 'indefinite',
-          '2': '15m',
-          '3': '30m',
-          '4': '45m',
-          '5': '1h',
-          '6': '2h',
-        };
-        const p = presetsMap[e.key];
-        if (p) {
-          soundEffects.playClick();
-          setPreset(p);
-        }
       } else if (e.key === 'Escape') {
         setIsOledOpen(false);
       }
@@ -134,7 +103,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleWake, toggleAudioPlay, setPreset]);
+  }, [toggleWake, toggleAudioPlay]);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-white selection:text-black">
@@ -150,23 +119,11 @@ export default function App() {
         onToggleFullscreen={handleToggleFullscreen}
       />
 
-      {/* Main Hero & Duration Selector */}
+      {/* Main Hero: Bold AWAKE / STANDBY & Play/Pause */}
       <main className="flex-1 flex flex-col items-center justify-center px-4">
-        {/* Massive Bold Centerpiece */}
         <MinimalHero
           isActive={isActive}
           onToggle={toggleWake}
-          isTimed={preset !== 'indefinite'}
-          formattedRemaining={formattedRemaining}
-          elapsedSeconds={elapsedSeconds}
-        />
-
-        {/* Minimal Duration Selector */}
-        <MinimalTimerBar
-          preset={preset}
-          customMinutes={customMinutes}
-          onSetPreset={setPreset}
-          onSetCustomMinutes={setCustomMinutes}
         />
 
         {/* Bottom Action Controls */}
@@ -185,14 +142,18 @@ export default function App() {
         <span>SPACE TO TOGGLE • O FOR OLED • F FOR FULLSCREEN</span>
       </footer>
 
-      {/* OLED Cosmic ScreenSaver Fullscreen Overlay */}
+      {/* Oscillating Active Time: Glides smoothly to and fro from bottom right to left in a loop */}
+      <OscillatingActiveTime
+        isActive={isActive}
+        elapsedSeconds={elapsedSeconds}
+      />
+
+      {/* OLED Anti-Burn Engine Fullscreen Overlay with full-spectrum smooth transmutation */}
       <OledCosmicOverlay
         isOpen={isOledOpen}
         onClose={() => setIsOledOpen(false)}
         isWakeActive={isActive}
         onToggleWake={toggleWake}
-        formattedRemaining={formattedRemaining}
-        isIndefinite={preset === 'indefinite'}
         elapsedSeconds={elapsedSeconds}
       />
     </div>

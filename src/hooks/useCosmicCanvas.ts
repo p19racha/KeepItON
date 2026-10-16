@@ -6,7 +6,7 @@ interface Particle {
   size: number;
   vx: number;
   vy: number;
-  color: string;
+  hue: number;
   alpha: number;
   pulseSpeed: number;
   phase: number;
@@ -18,6 +18,7 @@ interface NebulaCenter {
   radius: number;
   vx: number;
   vy: number;
+  hueOffset: number;
   pulsePhase: number;
 }
 
@@ -42,57 +43,64 @@ export function useCosmicCanvas(canvasRef: React.RefObject<HTMLCanvasElement | n
 
     window.addEventListener('resize', handleResize);
 
-    // Wandering focal points for monochrome nebulae
+    // 5 wandering celestial focal points distributed harmonically across the spectrum
     const nebulae: NebulaCenter[] = [
-      { x: width * 0.3, y: height * 0.4, radius: Math.min(width, height) * 0.45, vx: 0.3, vy: 0.2, pulsePhase: 0 },
-      { x: width * 0.7, y: height * 0.6, radius: Math.min(width, height) * 0.5, vx: -0.25, vy: 0.25, pulsePhase: Math.PI * 0.5 },
-      { x: width * 0.5, y: height * 0.25, radius: Math.min(width, height) * 0.4, vx: 0.18, vy: -0.2, pulsePhase: Math.PI },
-      { x: width * 0.2, y: height * 0.75, radius: Math.min(width, height) * 0.38, vx: -0.22, vy: -0.18, pulsePhase: Math.PI * 1.5 },
+      { x: width * 0.25, y: height * 0.35, radius: Math.min(width, height) * 0.45, vx: 0.25, vy: 0.18, hueOffset: 0, pulsePhase: 0 },
+      { x: width * 0.75, y: height * 0.65, radius: Math.min(width, height) * 0.48, vx: -0.22, vy: 0.22, hueOffset: 72, pulsePhase: Math.PI * 0.4 },
+      { x: width * 0.5, y: height * 0.2, radius: Math.min(width, height) * 0.42, vx: 0.18, vy: -0.2, hueOffset: 144, pulsePhase: Math.PI * 0.8 },
+      { x: width * 0.2, y: height * 0.8, radius: Math.min(width, height) * 0.4, vx: -0.2, vy: -0.16, hueOffset: 216, pulsePhase: Math.PI * 1.2 },
+      { x: width * 0.8, y: height * 0.3, radius: Math.min(width, height) * 0.44, vx: 0.15, vy: 0.24, hueOffset: 288, pulsePhase: Math.PI * 1.6 },
     ];
 
-    // Monochrome celestial stardust
-    const particleCount = Math.floor(Math.min(width, height) * 0.08);
-    const starColors = ['#ffffff', '#f5f5f7', '#e5e5ea', '#d1d1d6', '#c7c7cc'];
+    // Drifting stardust particles with continuous color transmutation
+    const particleCount = Math.floor(Math.min(width, height) * 0.09);
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 2.0 + 0.5,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        color: starColors[Math.floor(Math.random() * starColors.length)],
-        alpha: Math.random() * 0.6 + 0.2,
-        pulseSpeed: Math.random() * 0.015 + 0.005,
+        size: Math.random() * 2.2 + 0.6,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        hue: Math.random() * 360,
+        alpha: Math.random() * 0.65 + 0.25,
+        pulseSpeed: Math.random() * 0.015 + 0.006,
         phase: Math.random() * Math.PI * 2,
       });
     }
 
+    let baseHue = 0;
+
     const render = () => {
+      // Buttery smooth continuous spectrum cycle across literally all colors
+      baseHue = (baseHue + 0.06) % 360;
+
       // 1. OLED Pure Black Background
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Monochrome Ethereal Glows
+      // 2. Continuous Full-Spectrum Color Transmutation (additive screen blending)
       ctx.globalCompositeOperation = 'screen';
 
       for (const n of nebulae) {
         n.x += n.vx;
         n.y += n.vy;
-        if (n.x < width * 0.1 || n.x > width * 0.9) n.vx *= -1;
-        if (n.y < height * 0.1 || n.y > height * 0.9) n.vy *= -1;
+        if (n.x < width * 0.08 || n.x > width * 0.92) n.vx *= -1;
+        if (n.y < height * 0.08 || n.y > height * 0.92) n.vy *= -1;
 
-        n.pulsePhase += 0.012;
+        n.pulsePhase += 0.01;
         const currentRadius = n.radius * (0.88 + Math.sin(n.pulsePhase) * 0.12);
+        const currentHue = (baseHue + n.hueOffset) % 360;
 
         const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, currentRadius);
-        const alpha = 0.2 * intensity;
+        const alpha = 0.26 * intensity;
 
-        grad.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-        grad.addColorStop(0.35, `rgba(210, 210, 215, ${alpha * 0.6})`);
-        grad.addColorStop(0.7, `rgba(130, 130, 135, ${alpha * 0.2})`);
+        // Smooth multi-stop transition across neighboring spectral hues
+        grad.addColorStop(0, `hsla(${currentHue}, 90%, 55%, ${alpha})`);
+        grad.addColorStop(0.35, `hsla(${(currentHue + 40) % 360}, 85%, 45%, ${alpha * 0.68})`);
+        grad.addColorStop(0.7, `hsla(${(currentHue + 80) % 360}, 80%, 35%, ${alpha * 0.25})`);
         grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.fillStyle = grad;
@@ -101,7 +109,7 @@ export function useCosmicCanvas(canvasRef: React.RefObject<HTMLCanvasElement | n
         ctx.fill();
       }
 
-      // 3. Monochrome Drifting Particles
+      // 3. Stardust particles smoothly cycling through all colors
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
@@ -111,17 +119,16 @@ export function useCosmicCanvas(canvasRef: React.RefObject<HTMLCanvasElement | n
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
+        p.hue = (p.hue + 0.12) % 360;
         p.phase += p.pulseSpeed;
         const currentAlpha = (Math.sin(p.phase) * 0.3 + 0.7) * p.alpha * intensity;
 
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = currentAlpha;
+        ctx.fillStyle = `hsla(${p.hue}, 95%, 72%, ${currentAlpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.globalAlpha = 1.0;
       animFrameRef.current = requestAnimationFrame(render);
     };
 

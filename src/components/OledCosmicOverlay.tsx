@@ -8,8 +8,6 @@ interface OledCosmicOverlayProps {
   onClose: () => void;
   isWakeActive: boolean;
   onToggleWake: () => void;
-  formattedRemaining: string;
-  isIndefinite: boolean;
   elapsedSeconds: number;
 }
 
@@ -18,8 +16,6 @@ export const OledCosmicOverlay: React.FC<OledCosmicOverlayProps> = ({
   onClose,
   isWakeActive,
   onToggleWake,
-  formattedRemaining,
-  isIndefinite,
   elapsedSeconds,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -211,8 +207,12 @@ export const OledCosmicOverlay: React.FC<OledCosmicOverlayProps> = ({
             className={`w-2 h-2 rounded-full ${isWakeActive ? 'bg-white' : 'bg-white/30'}`}
           />
           <span>{isWakeActive ? 'KEEP ON' : 'STANDBY'}</span>
-          <span className="text-white/40">•</span>
-          <span>{isIndefinite ? formatElapsed(elapsedSeconds) : formattedRemaining}</span>
+          {isWakeActive && (
+            <>
+              <span className="text-white/40">•</span>
+              <span>{formatElapsed(elapsedSeconds)}</span>
+            </>
+          )}
         </div>
 
         {/* Massive Bold Time */}

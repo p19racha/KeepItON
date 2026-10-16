@@ -14,13 +14,13 @@
 
 ## Highlights
 
-- ⚡ **Bold Minimalist Aesthetic**: Stripped of text clutter, featuring massive high-impact typography, tactile controls, and high-contrast OLED black.
-- 🌌 **OLED Cosmic Anti-Burn Engine**: Continuous, 60fps procedural cosmic nebulas with true `#000000` deep blacks (physically turning off OLED pixels to conserve battery) and organic floating clock coordinates to completely prevent OLED image retention.
+- ⚡ **Bold Minimalist Aesthetic**: Stripped of text clutter, featuring massive high-impact typography, tactile Play/Pause controls, and high-contrast OLED black.
+- 🌌 **Full-Spectrum OLED Anti-Burn Engine**: Continuous, 60fps procedural celestial nebulas smoothly transmuting through literally all spectral colors over true `#000000` deep blacks with organic floating clock coordinates to prevent OLED image retention.
+- ↔️ **To-and-Fro Active Time**: Live active session time glides smoothly from bottom right to bottom left in an infinite, physical harmonic loop.
 - ⚡ **Dual-Engine Wake Lock**:
   - **Primary**: Native W3C [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) (`navigator.wakeLock`).
   - **Fallback**: Canvas-generated looping video stream for iOS Safari and unsupported browsers.
   - **Smart Reacquisition**: Automatically restores the screen wake lock when returning to the tab via `visibilitychange`.
-- ⏳ **Customizable Sleep Timers**: Presets for `15m`, `30m`, `45m`, `1h`, `2h`, `Custom minutes`, and `Always ON` with an Apple Watch-style progress ring and procedural glass marimba completion chime.
 - 🔋 **Battery Guard**: Monitors battery percentage and charging state via `navigator.getBattery()`, with configurable auto-shutoff below 20% to prevent unexpected battery drain when unplugged.
 - 🎧 **Ambient Focus Audio**: Procedural Web Audio synthesizer featuring **Brown Noise** (deep focus), **Gentle Rain**, and **White Noise** without downloading heavy audio files.
 - 📱 **Installable PWA**: Works offline and can be installed directly to the macOS Dock, iOS Home Screen, Android, or Windows.
@@ -36,7 +36,6 @@
 | <kbd>O</kbd> | Launch / Exit OLED Cosmic Anti-Burn Mode |
 | <kbd>F</kbd> | Toggle Fullscreen Mode |
 | <kbd>M</kbd> | Toggle Ambient Audio (Mute / Unmute) |
-| <kbd>1</kbd> – <kbd>6</kbd> | Quick switch timer presets (`Always ON`, `15m`, `30m`, `45m`, `1h`, `2h`) |
 | <kbd>Esc</kbd> | Exit OLED Mode or close popups |
 
 ---
