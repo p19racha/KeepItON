@@ -6,7 +6,7 @@ import {
   Waves, 
   Radio 
 } from 'lucide-react';
-import { AmbientSoundType } from '../hooks/useAmbientAudio';
+import type { AmbientSoundType } from '../hooks/useAmbientAudio';
 import { soundEffects } from '../utils/appleChime';
 
 interface AmbientAudioCardProps {

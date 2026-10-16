@@ -55,9 +55,8 @@ export function useWakeLock(): UseWakeLockReturn {
         ctx.fillRect(0, 0, 4, 4);
       }
 
-      if ('captureStream' in canvas) {
-        // @ts-expect-error captureStream is supported in HTMLCanvasElement
-        const stream = canvas.captureStream(1) as MediaStream;
+      if ('captureStream' in canvas && typeof canvas.captureStream === 'function') {
+        const stream = canvas.captureStream(1);
         streamRef.current = stream;
 
         const video = document.createElement('video');
