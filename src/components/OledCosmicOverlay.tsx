@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCosmicCanvas } from '../hooks/useCosmicCanvas';
-import { X, Maximize2, Minimize2, Sun, Zap } from 'lucide-react';
+import { X, Maximize2, Minimize2, Sun, Play, Pause } from 'lucide-react';
 import { soundEffects } from '../utils/appleChime';
 
 interface OledCosmicOverlayProps {
@@ -153,7 +153,11 @@ export const OledCosmicOverlay: React.FC<OledCosmicOverlayProps> = ({
             isWakeActive ? 'bg-white text-black' : 'bg-white/10 text-white/70'
           }`}
         >
-          <Zap className="w-3.5 h-3.5 fill-current" />
+          {isWakeActive ? (
+            <Pause className="w-3.5 h-3.5 fill-current stroke-none" />
+          ) : (
+            <Play className="w-3.5 h-3.5 fill-current stroke-none" />
+          )}
           <span>{isWakeActive ? 'AWAKE' : 'OFF'}</span>
         </button>
 

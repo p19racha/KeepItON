@@ -1,5 +1,5 @@
 import React from 'react';
-import { Power } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 import { soundEffects } from '../utils/appleChime';
 
 interface MinimalHeroProps {
@@ -34,7 +34,7 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
   return (
     <div className="flex flex-col items-center justify-center my-8 sm:my-14 select-none">
       {/* Massive Bold Headline / Countdown */}
-      <div className="mb-8 sm:mb-12 text-center">
+      <div className="mb-6 sm:mb-10 text-center">
         {isActive ? (
           isTimed ? (
             <div className="font-mono text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white">
@@ -52,25 +52,21 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
         )}
       </div>
 
-      {/* Hero Power Trigger Button: Pure Monochrome, High Contrast */}
+      {/* Central Play / Pause Symbol */}
       <button
         onClick={handleClick}
-        className={`group relative w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center apple-pressable transition-colors duration-150 ${
-          isActive
-            ? 'bg-white border-4 border-white text-black shadow-2xl'
-            : 'bg-neutral-950 border-2 border-white/20 hover:border-white/50 text-white/40 hover:text-white shadow-xl'
-        }`}
-        title="Toggle (Space)"
+        className="p-6 sm:p-8 text-white hover:text-white/70 active:scale-90 transition-all duration-150 cursor-pointer focus:outline-none flex items-center justify-center"
+        title={isActive ? 'Pause (Space)' : 'Play (Space)'}
       >
-        <Power
-          className={`w-14 h-14 sm:w-16 sm:h-16 ${
-            isActive ? 'stroke-[3]' : 'stroke-[2]'
-          }`}
-        />
+        {isActive ? (
+          <Pause className="w-20 h-20 sm:w-28 sm:h-28 fill-current stroke-none" />
+        ) : (
+          <Play className="w-20 h-20 sm:w-28 sm:h-28 fill-current stroke-none translate-x-1" />
+        )}
       </button>
 
       {/* Bold Minimal State Line */}
-      <div className="mt-8 font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">
+      <div className="mt-6 sm:mt-8 font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">
         {isActive ? (
           <span className="text-white flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-white" />
