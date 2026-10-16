@@ -1,6 +1,5 @@
 import React from 'react';
 import { Power } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { soundEffects } from '../utils/appleChime';
 
 interface MinimalHeroProps {
@@ -20,14 +19,6 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
 }) => {
   const handleClick = async () => {
     soundEffects.playClick();
-    if (!isActive) {
-      confetti({
-        particleCount: 25,
-        spread: 50,
-        origin: { y: 0.5 },
-        colors: ['#34C759', '#FFFFFF', '#007AFF'],
-      });
-    }
     await onToggle();
   };
 
@@ -50,7 +41,7 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
               {formattedRemaining}
             </div>
           ) : (
-            <div className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white drop-shadow-[0_0_50px_rgba(52,199,89,0.25)]">
+            <div className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white">
               AWAKE
             </div>
           )
@@ -61,19 +52,19 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
         )}
       </div>
 
-      {/* Hero Power Trigger Button: Stripped down, bold, tactile */}
+      {/* Hero Power Trigger Button: Pure Monochrome, High Contrast */}
       <button
         onClick={handleClick}
-        className={`group relative w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center apple-pressable transition-all duration-300 ${
+        className={`group relative w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center apple-pressable transition-colors duration-150 ${
           isActive
-            ? 'bg-neutral-950 border-4 border-emerald-400 minimal-glow-green text-emerald-400 shadow-2xl'
+            ? 'bg-white border-4 border-white text-black shadow-2xl'
             : 'bg-neutral-950 border-2 border-white/20 hover:border-white/50 text-white/40 hover:text-white shadow-xl'
         }`}
         title="Toggle (Space)"
       >
         <Power
-          className={`w-14 h-14 sm:w-16 sm:h-16 transition-all duration-300 ${
-            isActive ? 'stroke-[3] scale-110 drop-shadow-[0_0_12px_#34c759]' : 'stroke-[2] group-hover:scale-105'
+          className={`w-14 h-14 sm:w-16 sm:h-16 ${
+            isActive ? 'stroke-[3]' : 'stroke-[2]'
           }`}
         />
       </button>
@@ -81,8 +72,8 @@ export const MinimalHero: React.FC<MinimalHeroProps> = ({
       {/* Bold Minimal State Line */}
       <div className="mt-8 font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">
         {isActive ? (
-          <span className="text-emerald-400 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-white flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-white" />
             <span>ACTIVE {formatElapsed(elapsedSeconds)}</span>
           </span>
         ) : (
