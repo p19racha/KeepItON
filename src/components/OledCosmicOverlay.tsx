@@ -150,7 +150,7 @@ export const OledCosmicOverlay: React.FC<OledCosmicOverlayProps> = ({
             onToggleWake();
           }}
           className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase apple-pressable ${
-            isWakeActive ? 'bg-emerald-400 text-black' : 'bg-white/10 text-white/70'
+            isWakeActive ? 'bg-white text-black' : 'bg-white/10 text-white/70'
           }`}
         >
           <Zap className="w-3.5 h-3.5 fill-current" />
@@ -204,7 +204,7 @@ export const OledCosmicOverlay: React.FC<OledCosmicOverlayProps> = ({
         {/* Bold Minimal Status Tag */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md mb-4 text-xs font-black font-mono tracking-wider text-white uppercase">
           <span
-            className={`w-2 h-2 rounded-full ${isWakeActive ? 'bg-emerald-400 animate-pulse' : 'bg-white/30'}`}
+            className={`w-2 h-2 rounded-full ${isWakeActive ? 'bg-white' : 'bg-white/30'}`}
           />
           <span>{isWakeActive ? 'KEEP ON' : 'STANDBY'}</span>
           <span className="text-white/40">•</span>
