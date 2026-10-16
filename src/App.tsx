@@ -2,26 +2,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { useWakeLock } from './hooks/useWakeLock';
 import { useTimer, type TimerPreset } from './hooks/useTimer';
 import { useBattery } from './hooks/useBattery';
-import { useAmbientAudio } from './hooks/useAmbientAudio';
-import { AppleHeader } from './components/AppleHeader';
-import { PowerCenter } from './components/PowerCenter';
-import { SegmentedTimer } from './components/SegmentedTimer';
-import { BatteryCard } from './components/BatteryCard';
-import { AmbientAudioCard } from './components/AmbientAudioCard';
+import { useAmbientAudio, type AmbientSoundType } from './hooks/useAmbientAudio';
+import { MinimalHeader } from './components/MinimalHeader';
+import { MinimalHero } from './components/MinimalHero';
+import { MinimalTimerBar } from './components/MinimalTimerBar';
+import { MinimalBottomBar } from './components/MinimalBottomBar';
 import { OledCosmicOverlay } from './components/OledCosmicOverlay';
-import { ShortcutsModal } from './components/ShortcutsModal';
-import { Sparkles, Info, ShieldCheck } from 'lucide-react';
 import { soundEffects } from './utils/appleChime';
 
 export default function App() {
   const [isOledOpen, setIsOledOpen] = useState(false);
-  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Core Wake Lock Hook
   const {
     isActive,
-    mode: engineMode,
-    error: wakeError,
     elapsedSeconds,
     toggle: toggleWake,
     release: releaseWake,
@@ -36,13 +31,8 @@ export default function App() {
     preset,
     customMinutes,
     formattedRemaining,
-    progressPercent,
-    isPaused,
     setPreset,
     setCustomMinutes,
-    pauseTimer,
-    resumeTimer,
-    resetTimer,
   } = useTimer(isActive, {
     onExpire: handleTimerExpire,
     playChimeOnExpire: true,
@@ -62,22 +52,47 @@ export default function App() {
     guardEnabled: isBatteryGuardEnabled,
     threshold: batteryThreshold,
     setGuardEnabled: setBatteryGuardEnabled,
-    setThreshold: setBatteryThreshold,
   } = useBattery(handleLowBattery);
 
   // Ambient Audio Hook
   const {
     currentSound,
-    volume: audioVolume,
+    isPlaying: isAudioPlaying,
     setSound: setAudioSound,
-    setVolume: setAudioVolume,
     togglePlay: toggleAudioPlay,
   } = useAmbientAudio();
+
+  // Cycle sound options on click
+  const handleCycleSound = () => {
+    const cycleMap: Record<AmbientSoundType, AmbientSoundType> = {
+      none: 'brown',
+      brown: 'rain',
+      rain: 'white',
+      white: 'none',
+    };
+    setAudioSound(cycleMap[currentSound]);
+  };
+
+  // Fullscreen toggle
+  const handleToggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      await document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
 
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if user is typing in an input
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
@@ -93,11 +108,7 @@ export default function App() {
       } else if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
         soundEffects.playClick();
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {});
-        } else {
-          document.exitFullscreen().catch(() => {});
-        }
+        handleToggleFullscreen();
       } else if (e.key === 'm' || e.key === 'M') {
         e.preventDefault();
         soundEffects.playClick();
@@ -117,7 +128,6 @@ export default function App() {
           setPreset(p);
         }
       } else if (e.key === 'Escape') {
-        setIsShortcutsOpen(false);
         setIsOledOpen(false);
       }
     };
@@ -127,146 +137,52 @@ export default function App() {
   }, [toggleWake, toggleAudioPlay, setPreset]);
 
   return (
-    <div className="min-h-screen bg-black text-[#f5f5f7] flex flex-col justify-between selection:bg-purple-500/30">
-      {/* Background Ambient Cosmic Spotlights */}
-      <div className="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-b from-indigo-950/40 via-purple-950/20 to-transparent blur-3xl opacity-70" />
-        <div className="absolute top-1/3 -left-32 w-80 h-80 bg-blue-900/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 -right-32 w-80 h-80 bg-purple-900/15 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-white selection:text-black">
+      {/* Top Header */}
+      <MinimalHeader
+        isWakeActive={isActive}
+        batteryLevel={batteryLevel}
+        isCharging={isCharging}
+        isBatterySupported={isBatterySupported}
+        isAudioPlaying={isAudioPlaying}
+        onToggleAudio={toggleAudioPlay}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={handleToggleFullscreen}
+      />
 
-      {/* Main Content Wrap */}
-      <div>
-        {/* Apple Navigation Header */}
-        <AppleHeader
-          isWakeActive={isActive}
-          engineMode={engineMode}
-          onOpenOled={() => setIsOledOpen(true)}
-          onOpenShortcuts={() => setIsShortcutsOpen(true)}
+      {/* Main Hero & Duration Selector */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4">
+        {/* Massive Bold Centerpiece */}
+        <MinimalHero
+          isActive={isActive}
+          onToggle={toggleWake}
+          isTimed={preset !== 'indefinite'}
+          formattedRemaining={formattedRemaining}
+          elapsedSeconds={elapsedSeconds}
         />
 
-        {/* Error notification banner if wake lock failed */}
-        {wakeError && (
-          <div className="max-w-md mx-auto mb-4 px-4 py-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs flex items-center gap-2">
-            <Info className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>{wakeError}</span>
-          </div>
-        )}
+        {/* Minimal Duration Selector */}
+        <MinimalTimerBar
+          preset={preset}
+          customMinutes={customMinutes}
+          onSetPreset={setPreset}
+          onSetCustomMinutes={setCustomMinutes}
+        />
 
-        <main className="max-w-4xl mx-auto px-4 pb-12">
-          {/* Hero Tactile Power Button Center */}
-          <PowerCenter
-            isActive={isActive}
-            onToggle={toggleWake}
-            elapsedSeconds={elapsedSeconds}
-          />
+        {/* Bottom Action Controls */}
+        <MinimalBottomBar
+          onOpenOled={() => setIsOledOpen(true)}
+          currentSound={currentSound}
+          onCycleSound={handleCycleSound}
+          isBatteryGuardEnabled={isBatteryGuardEnabled}
+          onToggleBatteryGuard={() => setBatteryGuardEnabled(!isBatteryGuardEnabled)}
+          batteryThreshold={batteryThreshold}
+        />
+      </main>
 
-          {/* Quick Action Banner for OLED Cosmic Mode */}
-          <div className="my-6">
-            <button
-              onClick={() => {
-                soundEffects.playClick();
-                setIsOledOpen(true);
-              }}
-              className="w-full apple-glass-card hover:bg-neutral-800/40 border border-purple-500/25 hover:border-purple-400/50 rounded-3xl p-4 flex items-center justify-between group apple-pressable transition-all shadow-xl"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-purple-600/30 to-pink-600/30 border border-purple-400/30 text-purple-300">
-                  <Sparkles className="w-5 h-5 text-purple-300 group-hover:rotate-12 transition-transform duration-300" />
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-white tracking-tight">
-                      OLED Cosmic Anti-Burn Engine
-                    </h3>
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                      Zero Burn-In
-                    </span>
-                  </div>
-                  <p className="text-xs text-white/50 mt-0.5">
-                    Continuous 60fps cosmic nebulas with deep true blacks and drifting clock to protect OLED screens
-                  </p>
-                </div>
-              </div>
-
-              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-xs font-medium text-white/80 group-hover:bg-white/20 transition-colors">
-                <span>Launch</span>
-                <span className="text-[10px] text-white/50 font-mono">O</span>
-              </div>
-            </button>
-          </div>
-
-          {/* Functional Cards Grid */}
-          <div className="space-y-6">
-            {/* Session Timer & Presets */}
-            <SegmentedTimer
-              preset={preset}
-              customMinutes={customMinutes}
-              formattedRemaining={formattedRemaining}
-              progressPercent={progressPercent}
-              isPaused={isPaused}
-              isActive={isActive}
-              onSetPreset={setPreset}
-              onSetCustomMinutes={setCustomMinutes}
-              onPause={pauseTimer}
-              onResume={resumeTimer}
-              onReset={resetTimer}
-            />
-
-            {/* Twin Secondary Cards: Battery Guard & Ambient Audio */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BatteryCard
-                isSupported={isBatterySupported}
-                level={batteryLevel}
-                charging={isCharging}
-                guardEnabled={isBatteryGuardEnabled}
-                threshold={batteryThreshold}
-                onToggleGuard={setBatteryGuardEnabled}
-                onSetThreshold={setBatteryThreshold}
-              />
-
-              <AmbientAudioCard
-                currentSound={currentSound}
-                volume={audioVolume}
-                onSelectSound={setAudioSound}
-                onVolumeChange={setAudioVolume}
-              />
-            </div>
-          </div>
-        </main>
-      </div>
-
-      {/* Apple-Style Minimalist Footer */}
-      <footer className="w-full max-w-4xl mx-auto px-4 py-8 border-t border-white/5 text-center text-xs text-white/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>KeepItON • 100% Client-Side Privacy • Static GitHub Pages</span>
-        </div>
-
-        <div className="flex items-center gap-4 text-white/50">
-          <button
-            onClick={() => setIsShortcutsOpen(true)}
-            className="hover:text-white transition-colors"
-          >
-            Hotkeys
-          </button>
-          <span>•</span>
-          <button
-            onClick={() => setIsOledOpen(true)}
-            className="hover:text-white transition-colors"
-          >
-            OLED View
-          </button>
-          <span>•</span>
-          <a
-            href="https://github.com/p19racha/KeepItON"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors"
-          >
-            GitHub
-          </a>
-        </div>
+      {/* Minimal Footer */}
+      <footer className="w-full py-6 text-center text-[11px] font-bold tracking-widest text-white/20 uppercase">
+        <span>SPACE TO TOGGLE • O FOR OLED • F FOR FULLSCREEN</span>
       </footer>
 
       {/* OLED Cosmic ScreenSaver Fullscreen Overlay */}
@@ -278,12 +194,6 @@ export default function App() {
         formattedRemaining={formattedRemaining}
         isIndefinite={preset === 'indefinite'}
         elapsedSeconds={elapsedSeconds}
-      />
-
-      {/* Keyboard Shortcuts Dialog */}
-      <ShortcutsModal
-        isOpen={isShortcutsOpen}
-        onClose={() => setIsShortcutsOpen(false)}
       />
     </div>
   );

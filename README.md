@@ -2,8 +2,8 @@
 
 <div align="center">
   <img src="./public/favicon.svg" width="96" height="96" alt="KeepItON Logo" />
-  <h3>Keep Your Screen Awake • OLED Cosmic Anti-Burn Engine</h3>
-  <p>An Apple-inspired, client-side web utility with frosted liquid glass aesthetics, dual-engine wake lock, session timers, and a dedicated 60fps OLED cosmic screen protector.</p>
+  <h3>Keep Your Screen Awake • Bold Minimalist & OLED Anti-Burn Engine</h3>
+  <p>An ultra-minimalist, high-contrast, bold web utility to keep your screen awake with zero text clutter, dual-engine wake lock, session timers, and a dedicated 60fps OLED cosmic screen protector.</p>
 
   <p>
     <a href="https://p19racha.github.io/KeepItON/"><strong>🌐 Launch Live Web App</strong></a>
@@ -14,7 +14,7 @@
 
 ## Highlights
 
-- 🍏 **Apple Design System**: Cupertino-inspired frosted glass (`backdrop-blur-2xl`), SF typography, liquid segmented control pills, iOS-style spring switches, and subtle specular borders.
+- ⚡ **Bold Minimalist Aesthetic**: Stripped of text clutter, featuring massive high-impact typography, tactile controls, and high-contrast OLED black.
 - 🌌 **OLED Cosmic Anti-Burn Engine**: Continuous, 60fps procedural cosmic nebulas with true `#000000` deep blacks (physically turning off OLED pixels to conserve battery) and organic floating clock coordinates to completely prevent OLED image retention.
 - ⚡ **Dual-Engine Wake Lock**:
   - **Primary**: Native W3C [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) (`navigator.wakeLock`).
